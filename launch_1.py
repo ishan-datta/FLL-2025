@@ -1,3 +1,4 @@
+
 from pybricks.hubs import PrimeHub
 from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
 from pybricks.parameters import *
@@ -50,14 +51,19 @@ def program():
     arm_motor_2.close()
 
 async def mission():
+    # initialize and align attachments
+    await multitask(
+        arm_motor_1.run_until_stalled(-1000, Stop.COAST, 100),
+        arm_motor_2.run_until_stalled(1000, Stop.COAST, 100)
+        )
     # mission code goes here
-    await drive_base.straight(-25)
+    await drive_base.straight(-30)
     drive_base.reset(0, 0)
     drive_base.use_gyro(True)
     await drive_base.straight(775)
     # Aligns
-    await drive_base.straight(-62)
-    while not (drive_base.angle() <= -30 and move_motor_1.load() < 200):
+    await drive_base.straight(-60)
+    while not (drive_base.angle() <= -30 and Drive_Motor_1.load() < 200):
         await wait(0)
         drive_base.drive(0, -50)
     # Who lived here? Now we know.
@@ -69,11 +75,11 @@ async def mission():
     while not drive_base.angle() <= 50:
         await wait(0)
         drive_base.drive(0, -10)
-    await arm_motor_1.run_angle(500, -480)
+    await arm_motor_2.run_angle(500, -480)
     await drive_base.straight(100)
     # Punches Millstone
     await drive_base.turn(50)
-    await arm_motor_1.run_angle(300, 700)
+    await arm_motor_2.run_angle(300, 500)
     await drive_base.turn(-40)
     await drive_base.straight(-60)
     await drive_base.turn(-60)
