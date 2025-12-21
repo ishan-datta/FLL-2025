@@ -50,12 +50,11 @@ def program():
     arm_motor_2.close()
 
 async def mission():
+    # initialize and align attachments
+    await multitask(
+        arm_motor_1.run_until_stalled(-1000, Stop.COAST, 100),
+        arm_motor_2.run_until_stalled(1000, Stop.COAST, 100)
+        )
     # mission code goes here
-    drive_base.use_gyro(True)
-    drive_base.settings(straight_speed=400)
-    await drive_base.straight(-10)
-    await drive_base.straight(490)
-    drive_base.settings(straight_speed=200)
-    await drive_base.arc(1250, angle=12)
-    drive_base.settings(straight_speed=400)
-    await drive_base.arc(1250, angle=-25)
+    print('Hello, Pybricks!')
+    await motor.run_angle(500, 360)
